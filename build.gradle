@@ -5,10 +5,23 @@ plugins {
 group 'school.xjtuse'
 version '1.0-SNAPSHOT'
 
+sourceCompatibility = 12
+targetCompatibility = 12
+
 repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+}
+
+test {
+    useJUnitPlatform()
 }
