@@ -13,11 +13,19 @@ public class Token {
     String _value;
 
     public boolean isVariable() {
-        return _type == TokenType.VARIABLE;
+        return this._type == TokenType.VARIABLE;
     }
 
     private boolean isScalar() {
-        return _type == TokenType.INTEGER || _type == TokenType.FLOAT || _type == TokenType.STRING || _type == TokenType.BOOLEAN;
+        return this._type == TokenType.INTEGER || this._type == TokenType.FLOAT || this._type == TokenType.STRING || this._type == TokenType.BOOLEAN;
+    }
+
+    public boolean isNumber() {
+        return this._type == TokenType.INTEGER || this._type == TokenType.FLOAT;
+    }
+
+    public boolean isOperator() {
+        return this._type == TokenType.OPERATOR;
     }
 
     //make var or keyword
@@ -84,12 +92,10 @@ public class Token {
     //Operator
     // static Pattern patternOperator = Pattern.compile("^[+-\\\\*/><=!&|^%]$");
     public static Token makeOperator(PeekIterator<Character> iterator) throws LexicalException {
-
         int state = 0;
         while (iterator.hasNext()) {
-
             char lookahead = iterator.next();
-            System.out.println("state:" + state + " lookahead:" + lookahead);
+            //System.out.println("state:" + state + " lookahead:" + lookahead);
             switch (state) {
                 case 0:
                     switch (lookahead) {
@@ -223,4 +229,56 @@ public class Token {
         }
         throw new LexicalException("Unexpected error");
     }
+
+
+    //Number
+    public static Token makeNumber(PeekIterator<Character> iterator) throws LexicalException {
+        int state = 0;
+        StringBuilder s = new StringBuilder();
+
+        while (iterator.hasNext()) {
+            char lookahead = iterator.peek();
+            //System.out.println("lookahead:" + lookahead + " state:" + state);
+            switch (state) {
+                case 0:
+                    if (lookahead == '0') state = 1;
+                    else if (AlphabetHelper.isNumber(lookahead)) state = 2;
+                    else if (lookahead == '-' || lookahead == '+') state = 3;
+                    else if (lookahead == '.') state = 5;
+                    break;
+                case 1:
+                    if (lookahead == '0') state = 1;
+                    else if (AlphabetHelper.isNumber(lookahead)) state = 2;
+                    else if (lookahead == '.') state = 4;
+                    else return new Token(TokenType.INTEGER, String.valueOf(s));
+                    break;
+                case 2:
+                    if (AlphabetHelper.isNumber(lookahead)) state = 2;
+                    else if (lookahead == '.') state = 4;
+                    else return new Token(TokenType.INTEGER, String.valueOf(s));
+                    break;
+                case 3:
+                    if (AlphabetHelper.isNumber(lookahead)) state = 2;
+                    else if (lookahead == '.') state = 5;
+                    break;
+                case 4:
+                    if (lookahead == '.') throw new LexicalException(lookahead);
+                    else if (AlphabetHelper.isNumber(lookahead)) state = 6;
+                    else return new Token(TokenType.FLOAT, String.valueOf(s));
+                    break;
+                case 5:
+                    if (AlphabetHelper.isNumber(lookahead)) state = 6;
+                    else throw new LexicalException(lookahead);
+                    break;
+                case 6:
+                    if (AlphabetHelper.isNumber(lookahead)) state = 6;
+                    else if (lookahead == '.') throw new LexicalException(lookahead);
+                    else return new Token(TokenType.FLOAT, String.valueOf(s));
+            }//end of switch
+            iterator.next();
+            s.append(lookahead);
+        }//end of while
+        throw new LexicalException("Unexpected Error");
+    }
+
 }
