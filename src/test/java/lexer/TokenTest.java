@@ -1,13 +1,9 @@
-package common;
+package lexer;
 
 import Common.PeekIterator;
-import lexer.LexicalException;
-import lexer.Token;
-import lexer.TokenType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class TokenTest {
 
@@ -62,23 +58,45 @@ public class TokenTest {
     @Test
     public void testMakeOperator() throws LexicalException {
         String[] tests = {
-                "++dddd",
-                "=--1",
+                " ++ dddd",
+                "  =--1",
                 "-=;",
                 "/=g",
-                "+ xx abc",
+                " +,+",
+                ";&&!",
                 "&&!",
                 "**",
+                "+2",
                 "==mmm"
         };
 
-        String[] results = {"++", "=", "-=", "/=", "+", "&&", "*", "=="};
+        String[] results = {"++", "=", "-=", "/=", "+", ";", "&&", "*", "+","=="};
         int i = 0;
         for (String test : tests) {
             var it1 = new PeekIterator<Character>(test.chars().mapToObj(c -> (char) c));
             var token1 = Token.makeOperator(it1);
-            assertToken(token1,results[i++],TokenType.OPERATOR);
+            assertToken(token1, results[i++], TokenType.OPERATOR);
         }
     }
 
+    @Test
+    public void testMakeNumber() throws LexicalException {
+        String[] tests = {
+                "-123456;",
+                "+0 aa",
+                "-0 aa",
+                ".3 ccc",
+                ".5555 ddd",
+                "7789.8888 ooo",
+                "-1000.123123*123123",
+        };
+
+        for (String test : tests) {
+            var it1 = new PeekIterator<Character>(test.chars().mapToObj(c -> (char) c));
+            var token1 = Token.makeNumber(it1);
+            var splitValue = test.split("[*; ]+");
+            assertToken(token1, splitValue[0], (test.indexOf('.') == -1) ? TokenType.INTEGER : TokenType.FLOAT);
+        }
+
+    }
 }
