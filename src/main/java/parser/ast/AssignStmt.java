@@ -1,4 +1,4 @@
-package parser;
+package parser.ast;
 
 public class AssignStmt extends Stmt{
     public AssignStmt(ASTNode parent, String label, ASTNodeTypes astNodeType) {
