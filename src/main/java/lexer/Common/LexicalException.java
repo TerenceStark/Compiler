@@ -1,4 +1,4 @@
-package lexer;
+package lexer.Common;
 
 import lombok.Getter;
 

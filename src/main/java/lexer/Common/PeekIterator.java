@@ -1,4 +1,4 @@
-package Common;
+package lexer.Common;
 
 import java.util.Iterator;
 import java.util.LinkedList;
