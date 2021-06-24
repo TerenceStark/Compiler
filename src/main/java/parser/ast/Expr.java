@@ -10,6 +10,9 @@ import javax.swing.*;
 import java.util.Objects;
 
 public class Expr extends ASTNode {
+    public Expr() {
+    }
+
     private static PriorityTable table = new PriorityTable();
 
     public Expr(ASTNode parent) {
