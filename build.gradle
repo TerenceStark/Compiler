@@ -15,11 +15,11 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 }
 
 test {
