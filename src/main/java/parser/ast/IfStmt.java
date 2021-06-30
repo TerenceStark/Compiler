@@ -8,24 +8,24 @@ public class IfStmt extends Stmt {
         super(ASTNodeTypes.IF_STMT, "if");
     }
 
-    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
-        return parseIF( it);
+    public static ASTNode parse(PeekTokenIterator iterator) throws ParseException {
+        return parseIF(iterator);
     }
 
     // IfStmt -> If(Expr) Block Tail
-    public static ASTNode parseIF(PeekTokenIterator it) throws ParseException {
-        var lexeme = it.nextMatch("if");
-        it.nextMatch("(");
+    public static ASTNode parseIF(PeekTokenIterator iterator) throws ParseException {
+        var lexeme = iterator.nextMatch("if");
+        iterator.nextMatch("(");
         var ifStmt = new IfStmt();
         ifStmt.setLexeme(lexeme);
-        var expr = Expr.parse( it);
+        var expr = Expr.parse(iterator);
         ifStmt.addChild(expr);
-        it.nextMatch(")");
-        var block = Block.parse( it);
+        iterator.nextMatch(")");
+        var block = Block.parse(iterator);
         ifStmt.addChild(block);
 
-        var tail = parseTail(it);
-        if(tail != null) {
+        var tail = parseTail(iterator);
+        if (tail != null) {
             ifStmt.addChild(tail);
         }
         return ifStmt;
@@ -33,17 +33,17 @@ public class IfStmt extends Stmt {
     }
 
     // Tail -> else {Block} | else IFStmt | ε
-    public static ASTNode parseTail(PeekTokenIterator it) throws ParseException {
-        if(!it.hasNext() || !it.peek().get_value().equals("else")) {
+    public static ASTNode parseTail(PeekTokenIterator iterator) throws ParseException {
+        if (!iterator.hasNext() || !iterator.peek().get_value().equals("else")) {
             return null;
         }
-        it.nextMatch("else");
-        var lookahead = it.peek();
+        iterator.nextMatch("else");
+        var lookahead = iterator.peek();
 
-        if(lookahead.get_value().equals("{")) {
-            return Block.parse(it);
-        } else if(lookahead.get_value().equals("if")){
-            return parseIF(it);
+        if (lookahead.get_value().equals("{")) {
+            return Block.parse(iterator);
+        } else if (lookahead.get_value().equals("if")) {
+            return parseIF(iterator);
         } else {
             return null;
         }
@@ -54,26 +54,25 @@ public class IfStmt extends Stmt {
         return this.getChild(0);
     }
 
-    public ASTNode getBlock(){
+    public ASTNode getBlock() {
         return this.getChild(1);
     }
 
-    public ASTNode getElseBlock(){
+    public ASTNode getElseBlock() {
 
         var block = this.getChild(2);
-        if(block instanceof Block) {
+        if (block instanceof Block) {
             return block;
         }
         return null;
     }
 
-    public ASTNode getElseIfStmt(){
+    public ASTNode getElseIfStmt() {
         var ifStmt = this.getChild(2);
-        if(ifStmt instanceof IfStmt) {
+        if (ifStmt instanceof IfStmt) {
             return ifStmt;
         }
         return null;
     }
-
 
 }
