@@ -4,13 +4,14 @@ import lexer.Common.AlphabetHelper;
 import lexer.Common.LexicalException;
 import lexer.Common.PeekIterator;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 public class Lexer {
-    public ArrayList<Token> analyse(Stream source) throws LexicalException {
+    public ArrayList<Token> analyse(PeekIterator<Character> iterator) throws LexicalException {
         var tokens = new ArrayList<Token>();
-        var iterator = new PeekIterator<Character>(source, (char) 0);//(char)0 end_mark
 
         while (iterator.hasNext()) {
             char c = iterator.next();
@@ -26,24 +27,23 @@ public class Lexer {
             }//unnecessary action
 
             //delete annotation
-            if (c == '/') {
-                if (lookahead == '/') {
-                    while (iterator.hasNext() && (c = iterator.next()) != '\n') {
-                    }
-                    ;
+            if(c == '/') {
+                if(lookahead == '/') {
+                    while(iterator.hasNext() && (c = iterator.next()) != '\n') {};
                     continue;
-                } else if (lookahead == '*') {
-                    iterator.next();
+                }
+                else if(lookahead == '*') {
+                    iterator.next();//多读一个* 避免/*/通过
                     boolean valid = false;
-                    while (iterator.hasNext()) {
+                    while(iterator.hasNext()) {
                         char p = iterator.next();
-                        if (p == '*' && iterator.peek() == '/') {
+                        if(p == '*' && iterator.peek() == '/') {
                             iterator.next();
                             valid = true;
                             break;
                         }
                     }
-                    if (!valid) {
+                    if(!valid) {
                         throw new LexicalException("comments not match");
                     }
                     continue;
@@ -96,4 +96,67 @@ public class Lexer {
         return tokens;
     }//end analyse
 
+    public ArrayList<Token> analyse(Stream source) throws LexicalException {
+        var it = new PeekIterator<Character>(source, (char) 0);//char 0 end mark
+        return this.analyse(it);
+    }
+
+    /**
+     * 从源代码文件加载并解析
+     *
+     * @param src
+     * @return
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * @throws LexicalException
+     */
+    public static ArrayList<Token> fromFile(String src) throws FileNotFoundException, UnsupportedEncodingException, LexicalException {
+        var file = new File(src);
+        var fileStream = new FileInputStream(file);
+        var inputStreamReader = new InputStreamReader(fileStream, "UTF-8");
+
+        var br = new BufferedReader(inputStreamReader);
+
+
+        /**
+         * 利用BufferedReader每次读取一行
+         */
+        var it = new Iterator<Character>() {
+            private String line = null;
+            private int cursor = 0;
+
+            private void readLine() throws IOException {
+                if (line == null || cursor == line.length()) {
+                    line = br.readLine();
+                    cursor = 0;
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                try {
+                    readLine();
+                    return line != null;
+                } catch (IOException e) {
+                    return false;
+                }
+            }
+
+            @Override
+            public Character next() {
+                try {
+                    readLine();
+                    return line != null ? line.charAt(cursor++) : null;
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        };
+
+        var peekIt = new PeekIterator<Character>(it, '\0');
+
+        var lexer = new Lexer();
+        return lexer.analyse(peekIt);
+
+    }
 }

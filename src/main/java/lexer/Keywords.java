@@ -6,14 +6,19 @@ import java.util.HashSet;
 
 public class Keywords {
     static String[] keywords = {
+            "var",
+            "int",
+            "float",
+            "bool",
+            "void",
+            "string",
             "if",
             "else",
-            "while",
             "for",
+            "while",
             "break",
             "func",
-            "return",
-            "var",
+            "return"
     };
 
     static HashSet<String> hashSet = new HashSet<>(Arrays.asList(keywords));

@@ -17,7 +17,7 @@ public class Token {
         return this._type == TokenType.VARIABLE;
     }
 
-    private boolean isScalar() {
+    public boolean isScalar() {
         return this._type == TokenType.INTEGER || this._type == TokenType.FLOAT || this._type == TokenType.STRING || this._type == TokenType.BOOLEAN;
     }
 
@@ -27,6 +27,15 @@ public class Token {
 
     public boolean isOperator() {
         return this._type == TokenType.OPERATOR;
+    }
+
+    public boolean isType() {
+        return this._value.equals("bool")
+                || this._value.equals("int")
+                || this._value.equals("float")
+                || this._value.equals("void")
+                || this._value.equals("string");
+
     }
 
     //make var or keyword
