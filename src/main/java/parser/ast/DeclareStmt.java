@@ -1,7 +1,26 @@
 package parser.ast;
 
-public class DeclareStmt extends Stmt{
-    public DeclareStmt(ASTNode parent, String label, ASTNodeTypes astNodeType) {
-        super(parent, "declare", ASTNodeTypes.DECLARE_STMT);
+import parser.common.ParseException;
+import parser.common.PeekTokenIterator;
+
+public class DeclareStmt extends Stmt {
+    public DeclareStmt() {
+        super(ASTNodeTypes.DECLARE_STMT, "declare");
+    }
+
+    public static ASTNode parse(PeekTokenIterator it) throws ParseException {
+        var stmt = new DeclareStmt();
+        it.nextMatch("var");
+        var tkn = it.peek();
+        var factor = Factor.parse(it);
+        if (factor == null) {
+            throw new ParseException(tkn);  //tkn is not Variable or Scala
+        }
+        stmt.addChild(factor);
+        var lexeme = it.nextMatch("=");
+        var expr = Expr.parse(it);
+        stmt.addChild(expr);
+        stmt.setLexeme(lexeme);
+        return stmt;
     }
 }

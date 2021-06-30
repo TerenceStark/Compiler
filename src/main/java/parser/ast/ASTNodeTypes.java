@@ -12,6 +12,6 @@ public enum ASTNodeTypes {
     FOR_STMT,
     RETURN_STMT,
     ASSIGN_STMT,
-    FUNCTION_DEFINE_STMT,
+    FUNCTION_DECLARE_STMT,
     DECLARE_STMT
 }

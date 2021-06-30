@@ -1,12 +1,10 @@
 package parser.ast;
 
 import lexer.Token;
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
+import java.util.*;
 
-@Data
 public abstract class ASTNode {
 
     /* 树 */
@@ -14,15 +12,26 @@ public abstract class ASTNode {
     protected ASTNode parent;
 
     /* 关键信息 */
-    protected Token lexeme;// 词法单元
-    protected String label;// 备注(标签)
-    protected ASTNodeTypes astNodeType;// 类型
+    protected Token lexeme; // 词法单元
+    protected String label; // 备注(标签)
+    protected ASTNodeTypes type; // 类型
 
-    public ASTNode(ASTNode parent, Token lexeme, ASTNodeTypes binaryExpr) {
-        this.parent = parent;
-        this.lexeme = lexeme;
-        this.label = lexeme.get_value();
-        this.astNodeType = binaryExpr;
+
+    private HashMap<String, Object> _props = new HashMap<>();
+
+    public ASTNode() {
+    }
+
+    public ASTNode(ASTNodeTypes _type, String _label) {
+        this.type = _type;
+        this.label = _label;
+    }
+
+    public ASTNode getChild(int index) {
+        if(index >= this.children.size()) {
+            return null;
+        }
+        return this.children.get(index);
     }
 
     public void addChild(ASTNode node) {
@@ -30,30 +39,78 @@ public abstract class ASTNode {
         children.add(node);
     }
 
-    public ASTNode() {
+    public Token getLexeme(){
+        return lexeme;
     }
 
-    public ASTNode(ASTNode parent) {
-        this.parent = parent;
+    public List<ASTNode> getChildren(){
+        return children;
     }
 
-    public ASTNode(ASTNode parent, String label, ASTNodeTypes astNodeType) {
-        this.parent = parent;
-        this.label = label;
-        this.astNodeType = astNodeType;
+
+    public void setLexeme(Token token) {
+        this.lexeme = token;
     }
 
-    public ASTNode getChild(int index) {
-        if (index >= this.children.size()) {
-            return null;
-        }
-        return this.children.get(index);
+    public void setLabel(String s){
+        this.label = s;
+    }
+
+    public ASTNodeTypes getType(){
+        return this.type;
+    }
+
+    public void setType(ASTNodeTypes type) {
+        this.type = type;
     }
 
     public void print(int indent) {
-        System.out.println(StringUtils.leftPad(" ", indent * 2) + label);
-        for (var child : children) {
+        if(indent == 0) {
+            System.out.println("print:" + this);
+        }
+
+        System.out.println(StringUtils.leftPad(" ", indent *2) + label);
+        for(var child : children) {
             child.print(indent + 1);
+        }
+    }
+
+
+
+    public String getLabel() {
+        return this.label;
+    }
+
+    public void replaceChild(int i, ASTNode node) {
+        this.children.set(i, node);
+    }
+
+    public HashMap<String, Object> props() {
+        return this._props;
+    }
+
+    public Object getProp(String key) {
+        if(!this._props.containsKey(key)) {
+            return null;
+        }
+        return this._props.get(key);
+    }
+
+    public void setProp(String key, Object value) {
+        this._props.put(key, value);
+    }
+
+
+    public boolean isValueType() {
+        return this.type == ASTNodeTypes.VARIABLE || this.type == ASTNodeTypes.SCALAR;
+    }
+
+    public void replace(ASTNode node) {
+        if(this.parent != null) {
+            var idx = this.parent.children.indexOf(this);
+            this.parent.children.set(idx, node);
+            //this.parent = null;
+            //this.children = null;
         }
     }
 }

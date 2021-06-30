@@ -1,7 +1,7 @@
 package parser.ast;
 
-public class ForStmt extends Stmt{
-    public ForStmt(ASTNode parent, String label, ASTNodeTypes astNodeType) {
-        super(parent, "for", ASTNodeTypes.FOR_STMT);
+public class ForStmt extends Stmt {
+    public ForStmt() {
+        super(ASTNodeTypes.FOR_STMT, "for");
     }
 }
