@@ -28,7 +28,7 @@ public abstract class ASTNode {
     }
 
     public ASTNode getChild(int index) {
-        if(index >= this.children.size()) {
+        if (index >= this.children.size()) {
             return null;
         }
         return this.children.get(index);
@@ -39,11 +39,11 @@ public abstract class ASTNode {
         children.add(node);
     }
 
-    public Token getLexeme(){
+    public Token getLexeme() {
         return lexeme;
     }
 
-    public List<ASTNode> getChildren(){
+    public List<ASTNode> getChildren() {
         return children;
     }
 
@@ -52,11 +52,11 @@ public abstract class ASTNode {
         this.lexeme = token;
     }
 
-    public void setLabel(String s){
+    public void setLabel(String s) {
         this.label = s;
     }
 
-    public ASTNodeTypes getType(){
+    public ASTNodeTypes getType() {
         return this.type;
     }
 
@@ -65,16 +65,15 @@ public abstract class ASTNode {
     }
 
     public void print(int indent) {
-        if(indent == 0) {
+        if (indent == 0) {
             System.out.println("print:" + this);
         }
 
-        System.out.println(StringUtils.leftPad(" ", indent *2) + label);
-        for(var child : children) {
+        System.out.println(StringUtils.leftPad(" ", indent * 2) + label);
+        for (var child : children) {
             child.print(indent + 1);
         }
     }
-
 
 
     public String getLabel() {
@@ -90,7 +89,7 @@ public abstract class ASTNode {
     }
 
     public Object getProp(String key) {
-        if(!this._props.containsKey(key)) {
+        if (!this._props.containsKey(key)) {
             return null;
         }
         return this._props.get(key);
@@ -106,7 +105,7 @@ public abstract class ASTNode {
     }
 
     public void replace(ASTNode node) {
-        if(this.parent != null) {
+        if (this.parent != null) {
             var idx = this.parent.children.indexOf(this);
             this.parent.children.set(idx, node);
             //this.parent = null;
