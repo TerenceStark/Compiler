@@ -1,8 +1,8 @@
 package lexer;
 
-import lexer.Common.AlphabetHelper;
-import lexer.Common.LexicalException;
-import lexer.Common.PeekIterator;
+import lexer.common.AlphabetHelper;
+import lexer.common.LexicalException;
+import lexer.common.PeekIterator;
 
 import java.io.*;
 import java.util.ArrayList;
