@@ -1,6 +1,6 @@
 package parser;
 
-import lexer.Common.LexicalException;
+import lexer.common.LexicalException;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import parser.common.ParseException;
