@@ -1,8 +1,8 @@
 package parser;
 
 
-import lexer.Common.LexicalException;
-import lexer.Common.PeekIterator;
+import lexer.common.LexicalException;
+import lexer.common.PeekIterator;
 import lexer.Lexer;
 import parser.ast.ASTNode;
 import parser.ast.Program;
@@ -16,7 +16,7 @@ public class Parser {
 
     public static ASTNode parse(String source) throws LexicalException, ParseException {
         var lexer = new Lexer();
-        var tokens = lexer.analyse(new PeekIterator<>(source.chars().mapToObj(x ->(char)x), '\0'));
+        var tokens = lexer.analyse(new PeekIterator<>(source.chars().mapToObj(c ->(char)c), '\0'));
         return Program.parse(new PeekTokenIterator(tokens.stream()));
     }
 
