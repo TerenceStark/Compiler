@@ -1,6 +1,6 @@
 package lexer;
 
-import lexer.Common.AlphabetHelper;
+import lexer.common.AlphabetHelper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
