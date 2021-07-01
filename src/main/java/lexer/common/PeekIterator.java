@@ -1,11 +1,12 @@
-package lexer.Common;
+package lexer.common;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 
+
 public class PeekIterator<T> implements Iterator<T> {
-    private static final int CACHE_SIZE = 10;
+    private static int CACHE_SIZE = 10;
     private Iterator<T> it;
     private LinkedList<T> queueCache = new LinkedList<T>();
     private LinkedList<T> stackPutBacks = new LinkedList<T>();
@@ -13,6 +14,11 @@ public class PeekIterator<T> implements Iterator<T> {
 
     public PeekIterator(Stream<T> stream) {
         it = stream.iterator();
+    }
+
+    public PeekIterator(Iterator<T> _it, T endToke) {
+        this.it = _it;
+        this._endToken = endToke;
     }
 
     public PeekIterator(Stream<T> stream, T endToken) {
