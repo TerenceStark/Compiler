@@ -209,17 +209,12 @@ public class VMTest {
         // SP 2
         vm.runOneStep();
 
-
-
         // #RETURN p1 : from main
         vm.runOneStep();
         assertEquals(2, vm.getSpMemory(-1));
 
         while(vm.runOneStep());
         assertEquals(2, vm.getSpMemory(0));
-
-
-
     }
 
 
@@ -237,7 +232,6 @@ public class VMTest {
         var vm = new VirtualMachine(statics, opcodes, entry);
         vm.run();
 
-        assertEquals(120, vm.getSpMemory(0));
-
+        assertEquals(720, vm.getSpMemory(0));
     }
 }
