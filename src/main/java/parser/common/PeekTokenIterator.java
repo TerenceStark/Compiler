@@ -1,6 +1,6 @@
 package parser.common;
 
-import lexer.Common.PeekIterator;
+import lexer.common.PeekIterator;
 import lexer.Token;
 import lexer.TokenType;
 
@@ -12,7 +12,7 @@ public class PeekTokenIterator extends PeekIterator<Token> {
         super(stream);
     }
 
-    public Token matchNext(String value) throws ParseException {
+    public Token nextMatch(String value) throws ParseException {
         var token = this.next();
         if (!token.get_value().equals(value)) {
             throw new ParseException(token);
@@ -20,12 +20,11 @@ public class PeekTokenIterator extends PeekIterator<Token> {
         return token;
     }
 
-    public Token matchNext(TokenType tokenType) throws ParseException {
+    public Token nextMatch(TokenType type) throws ParseException {
         var token = this.next();
-        if (!token.get_type().equals(tokenType)) {
+        if (!token.get_type().equals(type)) {
             throw new ParseException(token);
         }
         return token;
     }
-
 }

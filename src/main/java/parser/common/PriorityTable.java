@@ -23,4 +23,5 @@ public class PriorityTable {
         return table.get(level);
     }
 
+
 }
