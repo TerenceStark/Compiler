@@ -22,6 +22,4 @@ public class PriorityTable {
     public List<String> get(int level) {
         return table.get(level);
     }
-
-
 }

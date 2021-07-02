@@ -45,7 +45,6 @@ public class Translator {
         var symbolTable = new SymbolTable();
         parent.addChild(symbolTable);
 
-
         //push record
 
         /**
@@ -131,7 +130,12 @@ public class Translator {
     }
 
     private void translateAssignStmt(TAProgram program, ASTNode node, SymbolTable symbolTable) throws ParseException {
-        //var a = expr
+        /*
+        * var a = expr
+        * expr -> 2 * 3 + 1
+        * p0 = 2 * 3
+        * p1 = p0 + 1
+        * */
         var assigned = symbolTable.createSymbolByLexeme(node.getChild(0).getLexeme());
         var expr = node.getChild(1);
         var addr = translateExpr(program, expr, symbolTable);
@@ -181,8 +185,9 @@ public class Translator {
     /**
      * Expr -> Expr1 op Expr2
      * T: result = Expr1.addr op Expr2.addr
-     * Expr1 -> Factor
+     * Expr1 or Expr2 -> Factor
      * T: Expr1.addr = symbolTable.find(factor)
+     * T: Expr2.addr = symbolTable.find(factor)
      */
     public Symbol translateExpr(
             TAProgram program,

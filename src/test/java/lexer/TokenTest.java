@@ -15,7 +15,7 @@ public class TokenTest {
 
     @Test
     public void testMakeVarOrKeyword() {
-        var it1 = new PeekIterator<Character>("if abc".chars().mapToObj(c -> (char) c));
+        var it1 = new PeekIterator<Character>("if _abc".chars().mapToObj(c -> (char) c));
         var it2 = new PeekIterator<Character>("true abc".chars().mapToObj(c -> (char) c));
 
         var token1 = Token.makeVarOrKeyword(it1);
@@ -30,7 +30,7 @@ public class TokenTest {
         var token3 = Token.makeVarOrKeyword(it1);
         var token4 = Token.makeVarOrKeyword(it2);
 
-        assertToken(token3, "abc", TokenType.VARIABLE);
+        assertToken(token3, "_abc", TokenType.VARIABLE);
         assertToken(token4, "abc", TokenType.VARIABLE);
     }
 
@@ -71,11 +71,12 @@ public class TokenTest {
                 "==mmm"
         };
 
-        String[] results = {"++", "=", "-=", "/=", "+", ";", "&&", "*", "+","=="};
+        String[] results = {"++", "=", "-=", "/=", "+", ";", "&&", "*", "+", "=="};
         int i = 0;
         for (String test : tests) {
             var it1 = new PeekIterator<Character>(test.chars().mapToObj(c -> (char) c));
             var token1 = Token.makeOperator(it1);
+            System.out.println(token1);
             assertToken(token1, results[i++], TokenType.OPERATOR);
         }
     }
@@ -95,9 +96,9 @@ public class TokenTest {
         for (String test : tests) {
             var it1 = new PeekIterator<Character>(test.chars().mapToObj(c -> (char) c));
             var token1 = Token.makeNumber(it1);
+            System.out.println(token1);
             var splitValue = test.split("[*; ]+");
             assertToken(token1, splitValue[0], (test.indexOf('.') == -1) ? TokenType.INTEGER : TokenType.FLOAT);
         }
-
     }
 }

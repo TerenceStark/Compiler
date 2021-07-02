@@ -44,6 +44,7 @@ public class Expr extends ASTNode {
         }
     }
 
+    //E_(k) -> op(k) E(k+1) E_(k) | ε
     private static ASTNode E_(int k, PeekTokenIterator it) throws ParseException {
         var token = it.peek();
         var value = token.get_value();
@@ -59,6 +60,7 @@ public class Expr extends ASTNode {
         return null;
     }
 
+    //    E(t) -> F E_(k) | U E_(k)  最高优先级处理
     private static ASTNode U(PeekTokenIterator it) throws ParseException {
         var token = it.peek();
         var value = token.get_value();
@@ -78,7 +80,7 @@ public class Expr extends ASTNode {
         return null;
     }
 
-
+    //    E(t) -> F E_(k) | U E_(k)  最高优先级处理
     private static ASTNode F(PeekTokenIterator it) throws ParseException {
         var factor = Factor.parse(it);
         if (factor == null) {
@@ -121,6 +123,5 @@ public class Expr extends ASTNode {
 
     public static ASTNode parse(PeekTokenIterator it) throws ParseException {
         return E(0, it);
-
     }
 }

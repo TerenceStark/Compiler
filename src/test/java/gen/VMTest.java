@@ -213,7 +213,7 @@ public class VMTest {
         vm.runOneStep();
         assertEquals(2, vm.getSpMemory(-1));
 
-        while(vm.runOneStep());
+        while (vm.runOneStep()) ;
         assertEquals(2, vm.getSpMemory(0));
     }
 
@@ -232,6 +232,33 @@ public class VMTest {
         var vm = new VirtualMachine(statics, opcodes, entry);
         vm.run();
 
-        assertEquals(720, vm.getSpMemory(0));
+        assertEquals(120, vm.getSpMemory(0));
+    }
+
+
+    @Test
+    public void testFunction() throws FileNotFoundException, ParseException, LexicalException, UnsupportedEncodingException, GeneratorException {
+        String source = "func fact(int n)  int {\n" +
+                "  if(n == 0) {\n" +
+                "    return 1\n" +
+                "  }\n" +
+                "  return fact(n - 1) * n\n" +
+                "}\n" +
+                "func main() void {\n" +
+                "    return fact(2)\n" +
+                "}";
+        var astNode = Parser.parse(source);
+        var translator = new Translator();
+        var taProgram = translator.translate(astNode);
+        var gen = new OpCodeGen();
+        var program = gen.gen(taProgram);
+        var statics = program.getStaticArea(taProgram);
+        var entry = program.getEntry();
+        var opcodes = program.toByteCodes();
+        System.out.println(taProgram.getStaticSymbolTable());
+        var vm = new VirtualMachine(statics, opcodes, entry);
+        vm.run();
+
+        assertEquals(2, vm.getSpMemory(0));
     }
 }

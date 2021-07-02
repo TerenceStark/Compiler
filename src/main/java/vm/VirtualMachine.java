@@ -188,7 +188,7 @@ public class VirtualMachine {
     }
 
 
-    public int[] getMemroy() {
+    public int[] getMemory() {
         return memory;
     }
 

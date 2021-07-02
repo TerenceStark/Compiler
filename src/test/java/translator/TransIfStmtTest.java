@@ -55,7 +55,7 @@ public class TransIfStmtTest {
         var program = translator.translate(astNode);
         System.out.println(program.toString());
 
-        var expectd = "p0 = a == 1\n" +
+        var expected = "p0 = a == 1\n" +
                 "IF p0 ELSE L0\n" +
                 "b = 100\n" +
                 "GOTO L5\n" +
@@ -75,6 +75,6 @@ public class TransIfStmtTest {
                 "L3:\n" +
                 "L4:\n" +
                 "L5:";
-        assertEquals(expectd, program.toString());
+        assertEquals(expected, program.toString());
     }
 }

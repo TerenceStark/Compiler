@@ -118,6 +118,11 @@ public class StmtTest {
         var block = functionStmt.getBlock();
         assertEquals(true, block.getChild(0) instanceof ReturnStmt);
 
+        System.out.println(ParserUtils.toPostfixExpression(functionStmt));
+        System.out.println(ParserUtils.toBFSString(functionStmt,4));
+        System.out.println(ParserUtils.toBFSString(functionStmt.getArgs(),3));
+        System.out.println(ParserUtils.toBFSString(functionStmt.getBlock(),2));
+
     }
 
     @Test
@@ -132,7 +137,10 @@ public class StmtTest {
         var tokens = Lexer.fromFile("./example/recursion.ts");
         var functionStmt = (FunctionDeclareStmt) Stmt.parseStmt(new PeekTokenIterator(tokens.stream()));
         functionStmt.print(0);
-
+        System.out.println(ParserUtils.toPostfixExpression(functionStmt));
+        System.out.println(ParserUtils.toBFSString(functionStmt,4));
+        System.out.println(ParserUtils.toBFSString(functionStmt.getArgs(),2));
+        System.out.println(ParserUtils.toBFSString(functionStmt.getBlock(),3));
         assertEquals("func fact args block", ParserUtils.toBFSString(functionStmt, 4));
         assertEquals("args n", ParserUtils.toBFSString(functionStmt.getArgs(), 2));
         assertEquals("block if return", ParserUtils.toBFSString(functionStmt.getBlock(), 3));

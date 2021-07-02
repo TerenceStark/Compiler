@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 public class StaticSymbolTable {
 
     private Hashtable<String, Symbol> offsetMap;

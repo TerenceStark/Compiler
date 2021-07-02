@@ -29,6 +29,7 @@ public class LexerTest {
         assertToken(tokens.get(8), "+100", TokenType.INTEGER);
         assertToken(tokens.get(9), "-", TokenType.OPERATOR);
         assertToken(tokens.get(10), "20", TokenType.INTEGER);
+        System.out.println(tokens.toString());
     }
 
     @Test
@@ -66,6 +67,7 @@ public class LexerTest {
         assertToken(tokens.get(24), ",", TokenType.OPERATOR);
         assertToken(tokens.get(25), "100", TokenType.INTEGER);
         assertToken(tokens.get(26), ")", TokenType.BRACKET);
+        System.out.println(tokens.toString());
     }
 
     @Test
@@ -73,6 +75,7 @@ public class LexerTest {
         var source = "/*123123123\n123123123*/a=1";
         var lexer = new Lexer();
         var tokens = lexer.analyse(source.chars().mapToObj(x -> (char) x));
+        System.out.println(tokens.toString());
         assertEquals(3, tokens.size());
     }
 

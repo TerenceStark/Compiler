@@ -45,7 +45,7 @@ public class Instruction {
     }
 
     public static Instruction loadToRegister(Register target, Symbol arg) {
-        // 转成整数，目前只支持整数，其他需要大家自己扩展
+        // 转成整数，目前只支持整数
         if (arg.getType() == SymbolType.ADDRESS_SYMBOL) {
             return offsetInstruction(OpCode.LW, target, Register.SP, new Offset(-arg.getOffset()));
         } else if (arg.getType() == SymbolType.IMMEDIATE_SYMBOL) {

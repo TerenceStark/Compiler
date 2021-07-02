@@ -14,7 +14,7 @@ public class PeekIteratorTest {
 
         assertEquals('a', it.next());
         assertEquals('b', it.next());
-        it.next();
+        assertEquals('c', it.next());
         assertEquals('d', it.next());
         assertEquals('e', it.next());
         assertEquals('f', it.peek());

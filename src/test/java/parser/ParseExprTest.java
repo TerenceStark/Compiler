@@ -16,12 +16,14 @@ public class ParseExprTest {
     @Test
     public void simple() throws LexicalException, ParseException {
         var expr = createExpr("1+2+3+4+5");
+//        expr.print(0);
         assertEquals("1 2 3 4 5 + + + +", ParserUtils.toPostfixExpression(expr));
     }
 
     @Test
     public void simple1() throws LexicalException, ParseException {
         var expr = createExpr("\"1\" == \"\"");
+//        expr.print(0);
         assertEquals("\"1\" \"\" ==", ParserUtils.toPostfixExpression(expr));
     }
 
@@ -31,7 +33,10 @@ public class ParseExprTest {
         var expr2 = createExpr("1*2+3");
         var expr3 = createExpr("10 * (7 + 4)");
         var expr4 = createExpr("(1*2!=7)==3!=4*5+6");
-
+//        expr1.print(0);
+//        expr2.print(0);
+//        expr3.print(0);
+//        expr4.print(0);
         assertEquals("1 2 3 * +", ParserUtils.toPostfixExpression(expr1));
         assertEquals("1 2 * 3 +", ParserUtils.toPostfixExpression(expr2));
         assertEquals("10 7 4 + *", ParserUtils.toPostfixExpression(expr3));
@@ -42,25 +47,26 @@ public class ParseExprTest {
     @Test
     public void unary() throws LexicalException, ParseException {
         var expr1 = createExpr("1 + ++i");
-        expr1.print(0);
+//        System.out.println(ParserUtils.toPostfixExpression(expr1));
+//        expr1.print(0);
         var expr2 = createExpr("1 + i++");
-        expr2.print(0);
+//        expr2.print(0);
         var expr3 = createExpr("!(a+b+c)");
-        expr3.print(0);
+//        expr3.print(0);
     }
 
     @Test
     public void functionCall() throws LexicalException, ParseException {
         var expr1 = createExpr("print(a)");
         var expr2 = createExpr("print(a,b,c)");
-        System.out.println(ParserUtils.toPostfixExpression(expr2));
+//        System.out.println(ParserUtils.toPostfixExpression(expr2));
         assertEquals("print a", ParserUtils.toPostfixExpression(expr1));
         assertEquals("print a b c", ParserUtils.toPostfixExpression(expr2));
     }
 
     private ASTNode createExpr(String src) throws LexicalException, ParseException {
         var lexer = new Lexer();
-        var tokens = lexer.analyse(src.chars().mapToObj(x ->(char)x));
+        var tokens = lexer.analyse(src.chars().mapToObj(x -> (char) x));
         var tokenIt = new PeekTokenIterator(tokens.stream());
         return Expr.parse(tokenIt);
     }
