@@ -2,8 +2,6 @@
 
 ## Author：TerenceStark
 
-## StuId：2183411101
-
 
 
 ## 一.词法分析  Lexer 
