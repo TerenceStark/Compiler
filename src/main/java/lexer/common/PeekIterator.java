@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 
 public class PeekIterator<T> implements Iterator<T> {
-    private static int CACHE_SIZE = 10;
+    private static final int CACHE_SIZE = 10;
     private Iterator<T> it;
     private LinkedList<T> queueCache = new LinkedList<T>();
     private LinkedList<T> stackPutBacks = new LinkedList<T>();
@@ -16,9 +16,9 @@ public class PeekIterator<T> implements Iterator<T> {
         it = stream.iterator();
     }
 
-    public PeekIterator(Iterator<T> _it, T endToke) {
+    public PeekIterator(Iterator<T> _it, T endToken) {
         this.it = _it;
-        this._endToken = endToke;
+        this._endToken = endToken;
     }
 
     public PeekIterator(Stream<T> stream, T endToken) {
@@ -29,6 +29,7 @@ public class PeekIterator<T> implements Iterator<T> {
     @Override
     public boolean hasNext() {
         return this.stackPutBacks.size() > 0 || it.hasNext() || _endToken != null;
+
     }
 
     @Override
@@ -63,8 +64,8 @@ public class PeekIterator<T> implements Iterator<T> {
         return val;
     }
 
-    //cache: A -> B ->C -> D
-    //putBack: D ->C -B -> A
+    //cache: A -> B ->C -> D in queueCache
+    //putBack: D --> into stackPutBacks
     public void putBack() {
         if (this.queueCache.size() > 0) {
             this.stackPutBacks.push(this.queueCache.pollLast());

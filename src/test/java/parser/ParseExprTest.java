@@ -17,7 +17,7 @@ public class ParseExprTest {
     public void simple() throws LexicalException, ParseException {
         var expr = createExpr("1+2+3+4+5");
 //        expr.print(0);
-        assertEquals("1 2 3 4 5 + + + +", ParserUtils.toPostfixExpression(expr));
+        assertEquals("", ParserUtils.toPostfixExpression(expr));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ParseExprTest {
         var expr3 = createExpr("10 * (7 + 4)");
         var expr4 = createExpr("(1*2!=7)==3!=4*5+6");
 //        expr1.print(0);
-//        expr2.print(0);
+//        expr2.print(0);1 2 3 4 5 + + + +
 //        expr3.print(0);
 //        expr4.print(0);
         assertEquals("1 2 3 * +", ParserUtils.toPostfixExpression(expr1));

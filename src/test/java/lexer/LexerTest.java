@@ -72,7 +72,7 @@ public class LexerTest {
 
     @Test
     public void test_deleteComment() throws LexicalException {
-        var source = "/*123123123\n123123123*/a=1";
+        var source = "/*123123123\\n123123123*/a=1";
         var lexer = new Lexer();
         var tokens = lexer.analyse(source.chars().mapToObj(x -> (char) x));
         System.out.println(tokens.toString());
