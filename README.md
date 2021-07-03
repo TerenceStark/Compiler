@@ -1,6 +1,6 @@
 # Compiler : Simple Compiler
 
-## Author：软件81金之航
+## Author：TerenceStark
 
 ## StuId：2183411101
 
