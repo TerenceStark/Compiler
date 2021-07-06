@@ -1,4 +1,4 @@
-# Compiler : Simple Compiler
+# Compiler : Simple Compiler XJTU
 
 ## Author：TerenceStark
 
